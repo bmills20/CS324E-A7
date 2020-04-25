@@ -1,7 +1,10 @@
 Circle[] circles = new Circle[50];
 Player p1;
+PFont f;
 
 void setup(){
+  //Will probably change font later when GUI is worked on
+  f = createFont("Arial",100,true);
   size(1000,800);
   frameRate(24);
   for( int i = 0; i < circles.length; i++ ){
@@ -22,11 +25,28 @@ void draw(){
   for( Circle c1: circles ){
     p1.shouldAbsorb(c1);
     c1.update();
-    c1.shouldAbsorb(p1);
+    p1.shouldAbsorb(c1);
+    //c1.playerDead(p1);
     for( Circle c2: circles ){
       c1.shouldAbsorb(c2);
     }
+    if(c1.playerDead(p1) == true){
+      background(127);
+      noLoop();
+      endGame();
+      break; //Break out of for loop, necessary so no circles will be generated upon loss
+    }
   }
+}
+
+void endGame(){
+  background(127);
+  //Possibly change to new font later
+  textFont(f);
+  fill(0);
+  textAlign(CENTER);
+  text("You Lose!",width/2,height/2);
+  
 }
 
 void keyPressed(){
