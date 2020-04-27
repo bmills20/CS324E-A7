@@ -2,6 +2,7 @@ Circle[] circles = new Circle[50];
 Player p1;
 PFont loseFont, gooeyFont;
 int totalRounds;
+ArrayList numDead = new ArrayList<Integer>();
 
 void setup(){
   loseFont = createFont("AYearWithoutRain.ttf",50,true);
@@ -24,6 +25,19 @@ void draw(){
     c1.update();
   }
   */
+  for( int i = 0; i < circles.length; i++ ){
+    if(circles[i].isAlive == false){
+      if(!numDead.contains(i)){
+        numDead.add(i);
+      }
+    }
+    if(numDead.size() >= 50){
+      noLoop();
+      winGame();
+      break;
+    }
+    
+  }
   
   for( Circle c1: circles ){
     p1.shouldAbsorb(c1);
@@ -53,6 +67,16 @@ void endGame(){
   fill(0);
   textAlign(CENTER);
   text("You Lose! \n Final size: " + round(p1.r),width/2,3*height/8);
+  text("Click anywhere to play again.", width/2, 5 * height /8);
+  //HOW TO START GAME OVER WHEN MOUSE CLICKED?
+}
+
+void winGame(){
+  background(230);
+  textFont(loseFont);
+  fill(0);
+  textAlign(CENTER);
+  text("You Win! \n Final size: " + round(p1.r),width/2,3*height/8);
   text("Click anywhere to play again.", width/2, 5 * height /8);
   //HOW TO START GAME OVER WHEN MOUSE CLICKED?
 }

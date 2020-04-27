@@ -3,6 +3,7 @@ class Circle {
   float turnCounter, currentTurn;
   color c;
   int numConsumed;
+  boolean isAlive;
   Circle( float rad, float tc ) {
     r = rad;
     turnCounter = tc;
@@ -13,6 +14,7 @@ class Circle {
     vmag = 2;
     c = color(random(0,255), random(0,255), random(0,255));
     numConsumed = 0;
+    isAlive = true;
   }
 
   void updateTheta() {
@@ -48,6 +50,7 @@ class Circle {
     vmag = 0;
     x = -2000;
     y = -2000;
+    isAlive = false;
   }
 
   void shouldAbsorb( Circle smaller ) {
