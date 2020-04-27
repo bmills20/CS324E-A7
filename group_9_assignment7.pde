@@ -1,10 +1,11 @@
 Circle[] circles = new Circle[50];
 Player p1;
-PFont loseFont, gooeyFont;
+PFont loseFont, gooeyFont, invisFont;
 int totalRounds;
 ArrayList numDead = new ArrayList<Integer>();
 
 void setup(){
+  numDead.clear();
   loseFont = createFont("AYearWithoutRain.ttf",50,true);
   gooeyFont = createFont("AYearWithoutRain.ttf",25,true);
   size(1000,800);
@@ -13,7 +14,6 @@ void setup(){
     circles[i] = new Circle( random(5, 25), random(12, 24) );
   }
   p1 = new Player(20);
-  totalRounds = 0;
 }
 
 void draw(){
@@ -50,15 +50,12 @@ void draw(){
     
     if(c1.playerDead(p1) == true){
       totalRounds ++;
-      background(127);
       noLoop();
       endGame();      
       break; //Break out of for loop, necessary so no circles will be generated upon loss
     }
-    
   }
   showGUI();
-  
 }
 
 void endGame(){
@@ -68,7 +65,6 @@ void endGame(){
   textAlign(CENTER);
   text("You Lose! \n Final size: " + round(p1.r),width/2,3*height/8);
   text("Click anywhere to play again.", width/2, 5 * height /8);
-  //HOW TO START GAME OVER WHEN MOUSE CLICKED?
 }
 
 void winGame(){
@@ -78,7 +74,6 @@ void winGame(){
   textAlign(CENTER);
   text("You Win! \n Final size: " + round(p1.r),width/2,3*height/8);
   text("Click anywhere to play again.", width/2, 5 * height /8);
-  //HOW TO START GAME OVER WHEN MOUSE CLICKED?
 }
 
 void showGUI() {
@@ -90,9 +85,27 @@ void showGUI() {
 }
 
 void keyPressed(){
-  p1.keyPressed();
+  if( key == 'p'){
+    looping = !looping;
+    textFont(gooeyFont);
+    fill(0);
+    textAlign(CENTER);
+    text("PAUSED",width/2,height/2);
+  }
+  else{
+    p1.keyPressed();
+  }
 }
 
 void keyReleased(){
   p1.keyReleased();
+}
+
+void mousePressed(){
+  frameCount = -1;
+  loop();
+}
+
+void mouseReleased(){
+  loop();
 }
