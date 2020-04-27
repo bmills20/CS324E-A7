@@ -1,20 +1,22 @@
 Circle[] circles = new Circle[50];
 Player p1;
-PFont f;
+PFont loseFont, gooeyFont;
+int totalRounds;
 
 void setup(){
-  //Will probably change font later when GUI is worked on
-  f = createFont("Arial",100,true);
+  loseFont = createFont("AYearWithoutRain.ttf",50,true);
+  gooeyFont = createFont("AYearWithoutRain.ttf",25,true);
   size(1000,800);
   frameRate(24);
   for( int i = 0; i < circles.length; i++ ){
     circles[i] = new Circle( random(5, 25), random(12, 24) );
   }
   p1 = new Player(20);
+  totalRounds = 0;
 }
 
 void draw(){
-  background(127);
+  background(230);
   p1.update();
   /*
   for( Circle c1: circles ){
@@ -22,6 +24,7 @@ void draw(){
     c1.update();
   }
   */
+  
   for( Circle c1: circles ){
     p1.shouldAbsorb(c1);
     c1.update();
@@ -30,23 +33,36 @@ void draw(){
     for( Circle c2: circles ){
       c1.shouldAbsorb(c2);
     }
+    
     if(c1.playerDead(p1) == true){
+      totalRounds ++;
       background(127);
       noLoop();
-      endGame();
+      endGame();      
       break; //Break out of for loop, necessary so no circles will be generated upon loss
     }
+    
   }
+  showGUI();
+  
 }
 
 void endGame(){
-  background(127);
-  //Possibly change to new font later
-  textFont(f);
+  background(230);
+  textFont(loseFont);
   fill(0);
   textAlign(CENTER);
-  text("You Lose!",width/2,height/2);
-  
+  text("You Lose! \n Final size: " + round(p1.r),width/2,3*height/8);
+  text("Click anywhere to play again.", width/2, 5 * height /8);
+  //HOW TO START GAME OVER WHEN MOUSE CLICKED?
+}
+
+void showGUI() {
+  textFont(gooeyFont);
+  fill(0);
+  textAlign(CENTER);
+  text("Number consumed: " + p1.numConsumed, width/5,30);
+  text("Total rounds: " + totalRounds, 4*width / 5,30);
 }
 
 void keyPressed(){
