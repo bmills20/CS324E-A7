@@ -12,7 +12,7 @@ class Circle {
     x = random(0, 1000);
     y = random(0, 800);
     vmag = 2;
-    c = color(random(0,255), random(0,255), random(0,255));
+    c = color(random(0,100), random(0,100), random(0,100));
     numConsumed = 0;
     isAlive = true;
   }
