@@ -78,7 +78,7 @@ void showGUI() {
 }
 
 void keyPressed(){
-  if( key == 'p'){
+  if( key == 'p' || key == 'P' ){
     looping = !looping;
     textFont(gooeyFont);
     fill(0);
