@@ -28,8 +28,10 @@ class Circle {
   void update() {
     ellipseMode(RADIUS);
     updateTheta();
-    x += vmag*cos(theta);
-    y += vmag*sin(theta);
+    if( theta != -1 ){
+      x += vmag*cos(theta);
+      y += vmag*sin(theta);
+    }
 
     if ( x > width ) {
       x = 0;

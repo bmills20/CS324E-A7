@@ -42,9 +42,14 @@ class Player extends Circle{
   }
   
   void updateTheta(){
-    int ydir = down - up;
-    int xdir = right - left;
-    theta = atan2(ydir, xdir);
+    if( up + down + left + right == 0 ){
+      theta = -1;
+    }
+    else{
+      int ydir = down - up;
+      int xdir = right - left;
+      theta = atan2(ydir, xdir);
+    }
   }
   
 }
