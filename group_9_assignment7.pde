@@ -13,7 +13,7 @@ void setup(){
   for( int i = 0; i < circles.length; i++ ){
     circles[i] = new Circle( random(5, 25), random(12, 24) );
   }
-  p1 = new Player(20);
+  p1 = new Player(25);
 }
 
 void draw(){
@@ -42,7 +42,6 @@ void draw(){
     }
     
     if(c1.playerDead(p1) == true){
-      totalRounds ++;
       noLoop();
       endGame();      
       break; //Break out of for loop, necessary so no circles will be generated upon loss
@@ -52,21 +51,27 @@ void draw(){
 }
 
 void endGame(){
+  totalRounds++;
   background(230);
   textFont(loseFont);
   fill(0);
   textAlign(CENTER);
   text("You Lose! \n Final size: " + round(p1.r),width/2,3*height/8);
   text("Click anywhere to play again.", width/2, 5 * height /8);
+  addScore(round(p1.r));
+  print("ENDED");
 }
 
 void winGame(){
+  totalRounds++;
   background(230);
   textFont(loseFont);
   fill(0);
   textAlign(CENTER);
   text("You Win! \n Final size: " + round(p1.r),width/2,3*height/8);
   text("Click anywhere to play again.", width/2, 5 * height /8);
+  addScore(round(p1.r));
+  print("WON");
 }
 
 void showGUI() {
@@ -75,6 +80,39 @@ void showGUI() {
   textAlign(CENTER);
   text("Number consumed: " + p1.numConsumed, width/5,30);
   text("Total rounds: " + totalRounds, 4*width / 5,30);
+}
+
+//ADDS SCORE TO XML FILE
+void addScore( int sc ){
+  XML xml = loadXML("scores.xml");
+  XML newChild = xml.addChild("score");
+  newChild.setContent(str(sc));
+  saveXML(xml,"scores.xml");
+  showHighScores();
+}
+
+//RETURNS ARRAY OF TOP TEN SCORES
+int[] showHighScores() {
+  XML xml = loadXML("scores.xml");
+  XML[] children = xml.getChildren("score");
+  int[] all_scores = new int[children.length];
+  for (int i = 0; i < children.length; i++) {
+    String sc = children[i].getContent();
+    all_scores[i] = int(sc);
+  }
+  all_scores = reverse(sort(all_scores));
+  int[] top_ten_scores;
+  if( all_scores.length > 10 ){
+    top_ten_scores = new int[10];
+  }
+  else{
+    top_ten_scores = new int[all_scores.length];
+  }
+  for( int i = 0; i < top_ten_scores.length; i++ ){
+    top_ten_scores[i] = all_scores[i];
+  }
+  //printArray(top_ten_scores);
+  return top_ten_scores;
 }
 
 void keyPressed(){
@@ -95,10 +133,15 @@ void keyReleased(){
 }
 
 void mousePressed(){
-  frameCount = -1;
+  setup();
   loop();
 }
-
+/*
+REMOVED THIS BECAUSE IT WAS CAUSING DUPLICATE SCORES TO BE ADDED
+WAS ORIGINALLY HAVING ISSUES WITH FRAMECOUNT, BUT CHANGING IT TO SETUP() SEEMS TO HAVE
+FIXED IT
 void mouseReleased(){
+  print(2);
+  setup();
   loop();
-}
+}*/
