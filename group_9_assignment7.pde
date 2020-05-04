@@ -1,7 +1,9 @@
 Circle[] circles = new Circle[50];
 Player p1;
+Power pwr1, pwr2;
 PFont loseFont, gooeyFont, invisFont;
 int totalRounds = 0;
+int turnCount = 0;
 ArrayList numDead = new ArrayList<Integer>();
 
 void setup(){
@@ -18,6 +20,13 @@ void setup(){
 
 void draw(){
   background(230);
+  if( turnCount % 500 == 0 ){
+    pwr1 = new Power();
+    pwr2 = new Power();
+  }
+  pwr1.update();
+  pwr2.update();
+  turnCount += 1;
   p1.update();
   for( int i = 0; i < circles.length; i++ ){
     if(circles[i].isAlive == false){
@@ -32,13 +41,16 @@ void draw(){
     }
     
   }
-  
+  p1.shouldAbsorbPower(pwr1);
+  p1.shouldAbsorbPower(pwr2);
   for( Circle c1: circles ){
-    p1.shouldAbsorb(c1);
     c1.update();
+    c1.shouldAbsorbPower(pwr1);
+    c1.shouldAbsorbPower(pwr2);
     p1.shouldAbsorb(c1);
     for( Circle c2: circles ){
       c1.shouldAbsorb(c2);
+      c2.shouldAbsorb(c1);
     }
     
     if(c1.playerDead(p1) == true){
