@@ -28,6 +28,7 @@ void draw(){
   pwr2.update();
   turnCount += 1;
   p1.update();
+  p1.updateCooldown();
   for( int i = 0; i < circles.length; i++ ){
     if(circles[i].isAlive == false){
       if(!numDead.contains(i)){

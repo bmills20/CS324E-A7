@@ -3,6 +3,10 @@ int up = 0;
 int down = 0;
 int left = 0;
 int right = 0;
+boolean cooldownFlag = false;
+int cooldownFrames = 200; 
+boolean boostActive = false;
+int boostFrames = 24;
 
 class Player extends Circle{
   
@@ -12,6 +16,13 @@ class Player extends Circle{
   }
   
   void keyPressed( ){
+    if( key == ' ' && cooldownFlag == false ){
+      vmag *= 1.5;
+      boostActive = true;
+      cooldownFlag = true;
+      boostFrames = 24;
+      cooldownFrames = 0;
+    }
     if( key == 'w' || key == 'W' ){
       up = 1;
     }
@@ -50,6 +61,27 @@ class Player extends Circle{
       int xdir = right - left;
       theta = atan2(ydir, xdir);
     }
+  }
+  
+  void updateCooldown(){
+    if( boostActive ){
+      boostFrames -= 1;
+      if( boostFrames <= 0 ){
+        vmag /= 1.5;
+        boostActive = false;
+      }
+    }   
+    if( cooldownFlag ){
+      cooldownFrames += 1;
+      if( cooldownFrames >= 200 ){
+        cooldownFlag = false;
+      }
+    }
+    //ADD IN RECTANGLE OR CIRCLE FOR COOLDOWN
+    fill(0);
+    rect(400,15,200,10);
+    fill(255);
+    rect(400,15,cooldownFrames,10);
   }
   
 }
