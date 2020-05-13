@@ -1,3 +1,5 @@
+import processing.sound.*;
+SoundFile pop;
 Circle[] circles = new Circle[50];
 Player p1;
 Power pwr1, pwr2;
@@ -10,6 +12,7 @@ void setup(){
   numDead.clear();
   loseFont = createFont("AYearWithoutRain.ttf",50,true);
   gooeyFont = createFont("AYearWithoutRain.ttf",25,true);
+  pop = new SoundFile(this,"popsound.mp3");
   size(1000,800);
   frameRate(24);
   for( int i = 0; i < circles.length; i++ ){
@@ -28,7 +31,7 @@ void draw(){
   pwr2.update();
   turnCount += 1;
   p1.update();
-  p1.updateCooldown();
+  
   for( int i = 0; i < circles.length; i++ ){
     if(circles[i].isAlive == false){
       if(!numDead.contains(i)){
@@ -60,6 +63,7 @@ void draw(){
       break; //Break out of for loop, necessary so no circles will be generated upon loss
     }
   }
+  p1.updateCooldown();
   showGUI();
 }
 
@@ -92,7 +96,13 @@ void showGUI() {
   fill(0);
   textAlign(CENTER);
   text("Number consumed: " + p1.numConsumed, width/5,30);
-  text("Total rounds: " + totalRounds, 4*width / 5,30);
+  text("Total rounds: " + totalRounds, 3*width / 4,30);
+  if (p1.soundOn == true) {
+    text("Sound on", width-65,30);
+  }
+  else { text("Sound off",width-65,30);}
+  textSize(18);
+  text("Q toggle sound",width-65,45);
 }
 
 //ADDS SCORE TO XML FILE
@@ -135,6 +145,9 @@ void keyPressed(){
     fill(0);
     textAlign(CENTER);
     text("PAUSED",width/2,height/2);
+  }
+  if(key == 'q' || key == 'q') {
+    p1.soundOn = !p1.soundOn;
   }
   else{
     p1.keyPressed();
