@@ -13,6 +13,7 @@ class Player extends Circle{
   Player( float rad ){
     super( rad, 0 );
     c = color(253, 115, 255);
+    id = "player";
   }
   
   void keyPressed( ){
