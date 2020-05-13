@@ -3,7 +3,8 @@ class Circle {
   float turnCounter, currentTurn;
   color c;
   int numConsumed, powerFrames;
-  boolean isAlive, isPowered;
+  boolean isAlive, isPowered, soundOn;
+  String id;
   Circle( float rad, float tc ) {
     r = rad;
     turnCounter = tc;
@@ -16,8 +17,10 @@ class Circle {
     numConsumed = 0;
     isAlive = true;
     isPowered = false;
+    soundOn = true;
     ptheta = 0;
     powerFrames = 1000;
+    id = "enemy";
   }
 
   void updateTheta() {
@@ -77,6 +80,9 @@ class Circle {
       r = sqrt( sq(r) + sq(smaller.r) );
       smaller.destroy();
       numConsumed ++;
+      if (id == "player" && soundOn == true){
+          pop.play();
+      }
     }
     if( isPowered ){
       float dist1 = sqrt( sq( smaller.x - (x + 1.5*r*cos(ptheta)) ) + sq( smaller.y - (y + 1.5*r*sin(ptheta)) ) );
